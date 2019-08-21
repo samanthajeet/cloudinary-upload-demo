@@ -25,4 +25,4 @@ If you haven't already signed up for Cloudinary account, you can do so [here](ht
 
 Onced logged-in, you should land on your dashboard. At the top of your dashboard are Account Details where you'll fine youre CLOUND NAME and API KEY. Copy and insert these into your .env
 
-![Image of account details](C:\Users\Sam\Documents\01-Dev\React\Tutorial\cloudinary-upload-demo\cloudinary-upload-demo\src\images\account_details.png)
+<img src='account_details.png' />
