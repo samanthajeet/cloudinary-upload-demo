@@ -3,9 +3,8 @@ import Dropzone from "react-dropzone";
 import axios from "axios";
 import "../App.css";
 
-const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_COUDINARY_UPLOAD_PRESET;
-const REACT_APP_CLOUDINARY_CLOUD_NAME =
-  process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_COUDINARY_UPLOAD_PRESET; //how to grab .env info on the front end
+const REACT_APP_CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
 const REACT_APP_CLOUDINARY_API_KEY = process.env.REACT_APP_CLOUDINARY_API_KEY;
 
 class Cloudinary extends Component {
@@ -19,15 +18,15 @@ class Cloudinary extends Component {
     };
   }
 
-  onImageDrop(files) {
+  onImageDrop(files) { //handles when files are chosen
     this.setState({
       uploadedFile: files
     });
 
-    this.handleImageUpload(files);
+    this.handleImageUpload(files); 
   }
 
-  handleImageUpload = async file => {
+  handleImageUpload = async file => { 
     const uploads = file.map(image => {
       // our formdata
       const formData = new FormData();
@@ -37,7 +36,6 @@ class Cloudinary extends Component {
       formData.append("api_key", REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary API key
       formData.append("timestamp", (Date.now() / 1000) | 0);
 
-      // Replace cloudinary upload URL with yours
       return axios
         .post(
           `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
@@ -45,7 +43,7 @@ class Cloudinary extends Component {
           { headers: { "X-Requested-With": "XMLHttpRequest" } }
         )
         .then(response => {
-          console.log(response.data);
+          // console.log(response.data); //comment in to console.log response data
           this.setState({
             images: [...this.state.images, response.data.url]
           });
@@ -56,7 +54,7 @@ class Cloudinary extends Component {
   };
 
   render() {
-    let images = this.state.images.map(image => {
+    let images = this.state.images.map(image => { //maps over images array in State and displays urls in img tags
       return (
         <div key={image} className="image">
           <figure>
@@ -76,7 +74,7 @@ class Cloudinary extends Component {
             accept="image/*" //allows any image type. You can be more explicit to limit only certain file types, e.g. accept="image/jpg,image/png"
             onDrop={this.onImageDrop.bind(this)} //method fired when image is uploaded
           >
-            {({ getRootProps, getInputProps }) => {
+            {({ getRootProps, getInputProps }) => { //Dropzone code I really don't understand
               return (
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
@@ -90,7 +88,7 @@ class Cloudinary extends Component {
             }}
           </Dropzone>
         </div>
-        {images}
+        {images} //mapped images
       </div>
     );
   }
