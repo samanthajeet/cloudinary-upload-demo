@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import Dropzone from "react-dropzone";
-import axios from 'axios'
+import axios from "axios";
+import "../App.css";
 
 const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_COUDINARY_UPLOAD_PRESET;
-const REACT_APP_CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+const REACT_APP_CLOUDINARY_CLOUD_NAME =
+  process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
 const REACT_APP_CLOUDINARY_API_KEY = process.env.REACT_APP_CLOUDINARY_API_KEY;
 
 class Cloudinary extends Component {
@@ -25,60 +27,62 @@ class Cloudinary extends Component {
     this.handleImageUpload(files);
   }
 
-  handleImageUpload = async(file) =>{
+  handleImageUpload = async file => {
     const uploads = file.map(image => {
       // our formdata
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("tags", '{TAGS}'); // Add tags for the images - {Array}
+      formData.append("tags", "{TAGS}"); // Add tags for the images - {Array}
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET); // Replace the preset name with your own
       formData.append("api_key", REACT_APP_CLOUDINARY_API_KEY); // Replace API key with your own Cloudinary API key
       formData.append("timestamp", (Date.now() / 1000) | 0);
 
       // Replace cloudinary upload URL with yours
-      return axios.post(
-        `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        formData, 
-        { headers: { "X-Requested-With": "XMLHttpRequest" }})
+      return axios
+        .post(
+          `https://api.cloudinary.com/v1_1/${REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+          formData,
+          { headers: { "X-Requested-With": "XMLHttpRequest" } }
+        )
         .then(response => {
-          console.log(response.data)
+          console.log(response.data);
           this.setState({
             images: [...this.state.images, response.data.url]
-          })
-        })
-    })
+          });
+        });
+    });
 
-    console.log(uploads)
-
-  
+    console.log(uploads);
   };
-    
+
   render() {
     let images = this.state.images.map(image => {
-      return(
-        <figure key={image} >
-          <img src={image} alt=""/>
-        </figure>
-      )
-    })
-    console.log(this.state)
+      return (
+        <div key={image} className="image">
+          <figure>
+            <img src={image} alt="" />
+          </figure>
+          <p>{image}</p>
+        </div>
+      );
+    });
+    console.log(this.state);
     return (
       <div className="App">
         <div className="dropzone">
           <Dropzone
-            style={{border: "1px solid black"}}
+            style={{ border: "1px solid black" }}
             multiple={true} //allows multiple images to be uploaded
             accept="image/*" //allows any image type. You can be more explicit to limit only certain file types, e.g. accept="image/jpg,image/png"
             onDrop={this.onImageDrop.bind(this)} //method fired when image is uploaded
           >
             {({ getRootProps, getInputProps }) => {
               return (
-                <div {...getRootProps()} >
+                <div {...getRootProps()}>
                   <input {...getInputProps()} />
                   {
                     <p>
-                      Try dropping some files here, or click to select files to
-                      upload.
+                      Click to select files to upload.
                     </p>
                   }
                 </div>

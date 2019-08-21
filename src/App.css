@@ -4,7 +4,33 @@
   box-sizing: border-box;
 }
 
+.App{
+  height: 70vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
 .dropzone{
-  border: 1px solid black;
-  background: blue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed black;
+  margin-bottom: 2rem;
+}
+
+.image{
+  height: 25rem;
+  width: 25rem;
+  margin-bottom: 1rem;
+}
+
+figure{
+  width: 100%;
+
+}
+
+img{
+  object-fit: cover;
+  width: 100%;
 }
